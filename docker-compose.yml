@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+  dremio:
+    platform: linux/x86_64
+    image: dremio/dremio-oss:latest
+    ports:
+      - 9047:9047
+      - 31010:31010
+      - 32010:32010
+    container_name: dremio
+
+  minioserver:
+    image: minio/minio
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    container_name: minio
+    command: server /data --console-address ":9001"
+
+  spark_notebook:
+    image: alexmerced/spark33-notebook
+    ports: 
+      - 8888:8888
+    env_file: .env
+    container_name: notebook
+    volumes:
+      - /home/psobczak/PycharmProjects/DataLakehouse/spark_notebooks:/home/docker/spark_notebooks
+      - /home/psobczak/PycharmProjects/DataLakehouse/hive-site.xml:/opt/spark/conf/hive-site.xml
+
+  nessie:
+    image: projectnessie/nessie
+    container_name: nessie
+    ports:
+      - "19120:19120"
+
+  hivemetastore:
+    image: apache/hive:3.1.3
+    container_name: hivemetastore
+    ports:
+      - "9083:9083"
+    environment:
+      SERVICE_NAME: metastore
+    volumes:
+      - /home/psobczak/PycharmProjects/DataLakehouse/entrypoint.sh:/entrypoint.sh
+      - /home/psobczak/PycharmProjects/DataLakehouse/core-site.xml:/opt/hive/conf/core-site.xml
+      - /home/psobczak/PycharmProjects/DataLakehouse/hive-site.xml:/opt/hive/conf/hive-site.xml
+      - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-aws-3.3.2.jar:/opt/hive/lib/hadoop-aws-3.3.2.jar
+      - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-common-3.3.2.jar:/opt/hive/lib/hadoop-common-3.3.2.jar
+      - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-auth-3.3.2.jar:/opt/hive/lib/hadoop-auth-3.3.2.jar
+      #- /home/psobczak/PycharmProjects/DataLakehouse/hadoop-client-3.3.2.jar:/opt/hive/lib/hadoop-client-3.3.2.jar
+      - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-shaded-guava-1.1.1.jar:/opt/hive/lib/hadoop-shaded-guava-1.1.1.jar
+      - /home/psobczak/PycharmProjects/DataLakehouse/aws-java-sdk-bundle-1.11.1026.jar:/opt/hive/lib/aws-java-sdk-bundle-1.11.1026.jar
+      
+  hiveserver2:
+    image: apache/hive:3.1.3
+    container_name: hiveserver2
+    ports:
+      - "10000:10000"
+      - "10002:10002"
+    environment:
+      SERVICE_NAME: hiveserver2
+      SERVICE_OPTS: -Dhive.metastore.uris=thrift://hivemetastore:9083
+      IS_RESUME: 'true'
+    volumes:
+      #- /home/psobczak/PycharmProjects/DataLakehouse/entrypoint.sh:/entrypoint.sh
+      - /home/psobczak/PycharmProjects/DataLakehouse/hive-site.xml:/opt/hive/conf/hive-site.xml
+      - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-aws-3.3.2.jar:/opt/hive/lib/hadoop-aws-3.3.2.jar
+      - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-common-3.3.2.jar:/opt/hive/lib/hadoop-common-3.3.2.jar
+      - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-auth-3.3.2.jar:/opt/hive/lib/hadoop-auth-3.3.2.jar
+      #- /home/psobczak/PycharmProjects/DataLakehouse/hadoop-client-3.3.2.jar:/opt/hive/lib/hadoop-client-3.3.2.jar
+      - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-shaded-guava-1.1.1.jar:/opt/hive/lib/hadoop-shaded-guava-1.1.1.jar
+      - /home/psobczak/PycharmProjects/DataLakehouse/aws-java-sdk-bundle-1.11.1026.jar:/opt/hive/lib/aws-java-sdk-bundle-1.11.1026.jar
+  
+
+networks:
+  default:
+    name: icebergenv
+    driver: bridge 
