@@ -37,11 +37,11 @@ You can either use the following script:
 scripts/download-jars.sh
 ```
 or download the following jars manually and place them in lib directory:
-- https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-common/3.3.2/hadoop-common-3.3.2.jar
-- https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.2/hadoop-aws-3.3.2.jar
-- https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-auth/3.3.2/hadoop-auth-3.3.2.jar
-- https://repo1.maven.org/maven2/org/apache/hadoop/thirdparty/hadoop-shaded-guava/1.1.1/hadoop-shaded-guava-1.1.1.jar
-- https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.1026/aws-java-sdk-bundle-1.11.1026.jar
+- [org.apache.hadoop:hadoop-common:3.3.2](https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common/3.3.2)
+- [org.apache.hadoop:hadoop-aws:3.3.2](https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-aws/3.3.2)
+- [org.apache.hadoop:hadoop-auth:3.3.2](https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-auth/3.3.2)
+- [org.apache.hadoop.thirdparty:hadoop-shaded-guava:1.1.1](https://mvnrepository.com/artifact/org.apache.hadoop.thirdparty/hadoop-shaded-guava/1.1.1)
+- [com.amazonaws:aws-java-sdk-bundle:1.11.1026](https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-bundle/1.11.1026)
 
 *2. Start Hive Metastore in new terminal window*
 ```buildoutcfg
