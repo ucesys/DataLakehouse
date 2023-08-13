@@ -9,6 +9,8 @@ services:
       - 31010:31010
       - 32010:32010
     container_name: dremio
+    #volumes:
+    #  - /home/psobczak/PycharmProjects/DataLakehouse/hive-site.xml:/opt/dremio/conf/hive-site.xml
 
   minioserver:
     image: minio/minio

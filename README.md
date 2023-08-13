@@ -60,3 +60,26 @@ docker-compose up dremio
 
 *5. Save Data source, you should be able to see and query the data*
 
+# MinIO / Hive Metastore / Spark / Dremio
+### Hive Metastore
+```buildoutcfg
+docker-compose up hivemetastore
+```
+
+### Spark
+*1. Exec into spark container*
+```buildoutcfg
+sudo docker exec -it notebook bash
+```
+*2A. Run spark-shell with HMS(non-iceberg tables)*
+```buildoutcfg
+spark-shell --conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.1026,org.apache.hadoop:hadoop-aws:3.3.2 
+```
+*2B. Run spark-shell with HMS as Iceberg Catalog(iceberg tables)*
+```buildoutcfg
+spark-shell --conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.1026,org.hadoop:hadoop-aws:3.3.2,org.apache.iceberg:iceberg-spark-runtime-3.3_2.12:1.3.1,org.apache.iceberg:iceberg-spark3-extensions:0.13.1 --conf spark.sql.catalog.type=hive --conf spark.sql.catalog.spark_catalog=org.apache.iceberg.spark.SparkCatalog --conf spark.sql.catalog.iceberg_catalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
+```
+
+### Dremio
+*1. From UI Select Add Source -> Metastores -> Hive 3.x*   
+*2. Configure Hive Metastore host, go to Advanced options and specify the following properties:*
