@@ -9,8 +9,6 @@ services:
       - 31010:31010
       - 32010:32010
     container_name: dremio
-    #volumes:
-    #  - /home/psobczak/PycharmProjects/DataLakehouse/hive-site.xml:/opt/dremio/conf/hive-site.xml
 
   minioserver:
     image: minio/minio
@@ -31,7 +29,7 @@ services:
     container_name: notebook
     volumes:
       - /home/psobczak/PycharmProjects/DataLakehouse/spark_notebooks:/home/docker/spark_notebooks
-      - /home/psobczak/PycharmProjects/DataLakehouse/hive-site.xml:/opt/spark/conf/hive-site.xml
+      - /home/psobczak/PycharmProjects/DataLakehouse/conf/hive-site.xml:/opt/spark/conf/hive-site.xml
 
   nessie:
     image: projectnessie/nessie
@@ -47,13 +45,12 @@ services:
     environment:
       SERVICE_NAME: metastore
     volumes:
-      - /home/psobczak/PycharmProjects/DataLakehouse/entrypoint.sh:/entrypoint.sh
-      - /home/psobczak/PycharmProjects/DataLakehouse/core-site.xml:/opt/hive/conf/core-site.xml
-      - /home/psobczak/PycharmProjects/DataLakehouse/hive-site.xml:/opt/hive/conf/hive-site.xml
+      - /home/psobczak/PycharmProjects/DataLakehouse/hms-entrypoint.sh:/entrypoint.sh
+      - /home/psobczak/PycharmProjects/DataLakehouse/conf/core-site.xml:/opt/hive/conf/core-site.xml
+      - /home/psobczak/PycharmProjects/DataLakehouse/conf/hive-site.xml:/opt/hive/conf/hive-site.xml
       - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-aws-3.3.2.jar:/opt/hive/lib/hadoop-aws-3.3.2.jar
       - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-common-3.3.2.jar:/opt/hive/lib/hadoop-common-3.3.2.jar
       - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-auth-3.3.2.jar:/opt/hive/lib/hadoop-auth-3.3.2.jar
-      #- /home/psobczak/PycharmProjects/DataLakehouse/hadoop-client-3.3.2.jar:/opt/hive/lib/hadoop-client-3.3.2.jar
       - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-shaded-guava-1.1.1.jar:/opt/hive/lib/hadoop-shaded-guava-1.1.1.jar
       - /home/psobczak/PycharmProjects/DataLakehouse/aws-java-sdk-bundle-1.11.1026.jar:/opt/hive/lib/aws-java-sdk-bundle-1.11.1026.jar
       
@@ -68,12 +65,10 @@ services:
       SERVICE_OPTS: -Dhive.metastore.uris=thrift://hivemetastore:9083
       IS_RESUME: 'true'
     volumes:
-      #- /home/psobczak/PycharmProjects/DataLakehouse/entrypoint.sh:/entrypoint.sh
-      - /home/psobczak/PycharmProjects/DataLakehouse/hive-site.xml:/opt/hive/conf/hive-site.xml
+      - /home/psobczak/PycharmProjects/DataLakehouse/conf/hive-site.xml:/opt/hive/conf/hive-site.xml
       - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-aws-3.3.2.jar:/opt/hive/lib/hadoop-aws-3.3.2.jar
       - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-common-3.3.2.jar:/opt/hive/lib/hadoop-common-3.3.2.jar
       - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-auth-3.3.2.jar:/opt/hive/lib/hadoop-auth-3.3.2.jar
-      #- /home/psobczak/PycharmProjects/DataLakehouse/hadoop-client-3.3.2.jar:/opt/hive/lib/hadoop-client-3.3.2.jar
       - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-shaded-guava-1.1.1.jar:/opt/hive/lib/hadoop-shaded-guava-1.1.1.jar
       - /home/psobczak/PycharmProjects/DataLakehouse/aws-java-sdk-bundle-1.11.1026.jar:/opt/hive/lib/aws-java-sdk-bundle-1.11.1026.jar
   

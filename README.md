@@ -8,9 +8,8 @@ Nessie catalog is supported as Dremio Data Source for Dremio >= 24.X,
 prior to that we have to use either Hive Metastore or Glue as Iceberg Catalog.
 The goal of this repository is to create a setup with HMS as our Iceberg Catalog instead of Nessie.
 
-# MinIO / Nessie / Spark / Dremio
-### MinIO 
-
+# Start MinIO and Dremio
+### MinIO
 *1. Start minio*  
 ```buildoutcfg
 docker-compose up minioserver
@@ -20,13 +19,21 @@ docker-compose up minioserver
 *4. Copy and paster access/secret key to .env.TEMPLATE file*  
 *5. Rename .env.TEMPLATE to .env*
 
+### Dremio
+*1. Start dremio in new terminal window*
+```buildoutcfg
+docker-compose up dremio
+```
+*2. Go to localhost:9047 and create your admin account*  
+
+# Nessie as Iceberg Catalog (Dremio >= 24.x)
 ### Nessie
+*Start Nessie in new terminal window*
 ```buildoutcfg
 docker-compose up nessie
 ```
-
-### Spark with Nessie as Iceberg Catalog
-*1. Start spark notebook*  
+### Connect Spark to Nessie Iceberg Catalog
+*1. Start spark notebook in new terminal window*  
 ```buildoutcfg
 docker-compose up notebook
 ```
@@ -39,48 +46,39 @@ notebook  |  or http://127.0.0.1:8888/?token=9db2c8a4459b4aae3132dfabdf9bf439639
 *4. Run the notebook*   
 *5. Check if data exists in MinIO*
 
-### Dremio
-*1. Start dremio*
-```buildoutcfg
-docker-compose up dremio
-```
-*2. Go to localhost:9047 and create your admin account*  
-*3. Go to Add Source -> Nessie*  
-*4. Configure The following:*
-- General->Nessie Endpoint URL: http://nessie:19120/api/v2
-- General->Nessie Authentication Type: None
-- Storage->Authentication Type: AWS Access Key
-- Storage->AWS Access Key/Secret: Fill with generated MinIO access/secret
-- Storage->AWS Root path: /warehouse
-- Storage->Connection properties: Add the following
-  - Name: fs.s3a.path.style.access, Value: true
-  - Name: fs.s3a.endpoint, Value: minio:9000
-  - Name: dremio.s3.compat, Value: true
-- Storage->Encrypt connection: Turn off  
+### Connect Dremio to Nessie Iceberg Catalog
+*1. Go to Add Source -> Nessie and configure The following:*  
+*2. Save Data source, you should be able to see and query the data*
 
-*5. Save Data source, you should be able to see and query the data*
-
-# MinIO / Hive Metastore / Spark / Dremio
+# Hive Metastore as Iceberg Catalog(Dremio <= 23.X)
 ### Hive Metastore
+*Start Hive Metastore in new terminal window*
 ```buildoutcfg
 docker-compose up hivemetastore
 ```
 
-### Spark
+### Connect Spark to Hive Metastore Iceberg Catalog 
 *1. Exec into spark container*
 ```buildoutcfg
 sudo docker exec -it notebook bash
 ```
-*2A. Run spark-shell with HMS(non-iceberg tables)*
+
+*2. Run spark-shell session with HMS as Iceberg Catalog*
+```buildoutcfg
+spark-shell \
+--conf spark.sql.catalog.type=hive \
+--conf spark.sql.catalog.spark_catalog=org.apache.iceberg.spark.SparkCatalog \
+--conf spark.sql.catalog.iceberg_catalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO \
+--conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions \
+--conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.1026,org.apache.hadoop:hadoop-aws:3.3.2,org.apache.iceberg:iceberg-spark-runtime-3.3_2.12:1.3.1,org.apache.iceberg:iceberg-spark3-extensions:0.13.1
+```
+
+*\*To Run spark-shell with HMS(non-iceberg tables)*
 ```buildoutcfg
 spark-shell --conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.1026,org.apache.hadoop:hadoop-aws:3.3.2 
 ```
-*2B. Run spark-shell with HMS as Iceberg Catalog(iceberg tables)*
-```buildoutcfg
-spark-shell --conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.1026,org.hadoop:hadoop-aws:3.3.2,org.apache.iceberg:iceberg-spark-runtime-3.3_2.12:1.3.1,org.apache.iceberg:iceberg-spark3-extensions:0.13.1 --conf spark.sql.catalog.type=hive --conf spark.sql.catalog.spark_catalog=org.apache.iceberg.spark.SparkCatalog --conf spark.sql.catalog.iceberg_catalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
-```
 
-### Dremio
+### Connect Dremio to Hive Metastore Iceberg Catalog 
 *1. From UI Select Add Source -> Metastores -> Hive 3.x*   
 *2. Configure Hive Metastore host, go to Advanced options and specify the following properties:*  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config.png" width="1000"></img>  
