@@ -1,12 +1,16 @@
 # What is this project about?
+The goal of this project is to create a local Iceberg Data Lakehouse consisting of the following components:
+- MinIO as storage layer for storing tables in Iceberg Format
+- Iceberg Catalog for storing latest metadata pointers per table
+  - Option A: Hive Metastore
+  - Option B: Nessie(Available as Dremio source since version 24.X)
+- Spark & Dremio for interacting with Iceberg Tables 
 
-This repository is an extension to Alex's Merced blogpost regarding setting
-up a Local Data Lakehouse using MinIO/Nessie/Spark/Dremio.   
-https://dev.to/alexmercedcoder/data-engineering-create-a-apache-iceberg-based-data-lakehouse-on-your-laptop-41a8
+<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/diagram.png" width="650"></img>  
 
-Nessie catalog is supported as Dremio Data Source for Dremio >= 24.X, prior to that we have to use either Hive Metastore or Glue as our Iceberg Catalog.
-As a result, for older non-aws Dremio installations, Hive Metastore remains the only choice for Iceberg Catalog.
-The goal of this repository is to create a setup with HMS as our Iceberg Catalog instead of Nessie.
+Alex's Merced in his  [Data Engineering: Create a Apache Iceberg based Data Lakehouse on your Laptop](https://dev.to/alexmercedcoder/data-engineering-create-a-apache-iceberg-based-data-lakehouse-on-your-laptop-41a8) blogpost has created a local Data Lakehouse on MinIO using project Nessie. Nessie catalog is supported as Dremio Data Source since Dremio 24.X version. 
+For Dremio versions <= 23.X, we are left with Hadoop, Glue and Hive Metastore options for Iceberg Catalog.
+Due to concurrency problems with Hadoop Catalog, for <= 23.X non-aws Dremio installations, Hive Metastore remains the only choice for Iceberg Catalog.
 
 # Step 0: Launch MinIO and Dremio
 ### MinIO
