@@ -68,6 +68,7 @@
 <property>
   <name>fs.s3a.aws.credentials.provider</name>
   <value>org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider</value>
+  <description>Uses access key/secret</description>
 </property>
 
 <property>
@@ -78,21 +79,24 @@
 <property>
   <name>hive.metastore.sasl.enabled</name>
   <value>false</value>
+  <description>Turn off kerberos</description>
 </property>
 
-<!-- 
 <property>
-  <name>fs.s3a.defaultFS</name>
-  <value>s3a://warehouse</value>
+  <name>fs.s3a.path.style.access</name>
+  <value>true</value>
+  <description>By default this is false which results in http requests going to BUCKET.hostname which results in unresolved hostname</description>
 </property>
--->
+
 <property>
   <name>hadoop.proxyuser.hive.groups</name>
   <value>*</value>
+  <description>Give access to hive group to Metastore API</description>
 </property>
 
 <property>
   <name>hadoop.proxyuser.hive.hosts</name>
+    <description>Give access to hive user to Metastore API</description>
   <value>*</value>
 </property>
 
