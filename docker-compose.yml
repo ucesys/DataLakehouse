@@ -45,7 +45,7 @@ services:
     environment:
       SERVICE_NAME: metastore
     volumes:
-      - /home/psobczak/PycharmProjects/DataLakehouse/hms-entrypoint.sh:/entrypoint.sh
+      - /home/psobczak/PycharmProjects/DataLakehouse/scripts/hms-entrypoint.sh:/entrypoint.sh
       - /home/psobczak/PycharmProjects/DataLakehouse/conf/core-site.xml:/opt/hive/conf/core-site.xml
       - /home/psobczak/PycharmProjects/DataLakehouse/conf/hive-site.xml:/opt/hive/conf/hive-site.xml
       - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-aws-3.3.2.jar:/opt/hive/lib/hadoop-aws-3.3.2.jar
