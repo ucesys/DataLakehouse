@@ -41,7 +41,7 @@
   <!--  this should eventually be deprecated since the metastore should supply this -->
   <name>hive.metastore.warehouse.dir</name>
   <value>s3a://warehouse-bucket/warehouse</value>
-  <description></description>
+  <description>For HMS warehouse dir cannot be top level bucket directory</description>
 </property>
 
 <property>

@@ -28,8 +28,8 @@ services:
     env_file: .env
     container_name: notebook
     volumes:
-      - /home/psobczak/PycharmProjects/DataLakehouse/spark_notebooks:/home/docker/spark_notebooks
-      - /home/psobczak/PycharmProjects/DataLakehouse/conf/hive-site.xml:/opt/spark/conf/hive-site.xml
+      - ./spark_notebooks:/home/docker/spark_notebooks
+      - ./conf/hive-site.xml:/opt/spark/conf/hive-site.xml
 
   nessie:
     image: projectnessie/nessie
@@ -45,14 +45,14 @@ services:
     environment:
       SERVICE_NAME: metastore
     volumes:
-      - /home/psobczak/PycharmProjects/DataLakehouse/scripts/hms-entrypoint.sh:/entrypoint.sh
-      - /home/psobczak/PycharmProjects/DataLakehouse/conf/core-site.xml:/opt/hive/conf/core-site.xml
-      - /home/psobczak/PycharmProjects/DataLakehouse/conf/hive-site.xml:/opt/hive/conf/hive-site.xml
-      - /home/psobczak/PycharmProjects/DataLakehouse/lib/hadoop-aws-3.3.2.jar:/opt/hive/lib/hadoop-aws-3.3.2.jar
-      - /home/psobczak/PycharmProjects/DataLakehouse/lib/hadoop-common-3.3.2.jar:/opt/hive/lib/hadoop-common-3.3.2.jar
-      - /home/psobczak/PycharmProjects/DataLakehouse/lib/hadoop-auth-3.3.2.jar:/opt/hive/lib/hadoop-auth-3.3.2.jar
-      - /home/psobczak/PycharmProjects/DataLakehouse/lib/hadoop-shaded-guava-1.1.1.jar:/opt/hive/lib/hadoop-shaded-guava-1.1.1.jar
-      - /home/psobczak/PycharmProjects/DataLakehouse/lib/aws-java-sdk-bundle-1.11.1026.jar:/opt/hive/lib/aws-java-sdk-bundle-1.11.1026.jar
+      - ./scripts/hms-entrypoint.sh:/entrypoint.sh
+      - ./conf/core-site.xml:/opt/hive/conf/core-site.xml
+      - ./conf/hive-site.xml:/opt/hive/conf/hive-site.xml
+      - ./lib/hadoop-aws-3.3.2.jar:/opt/hive/lib/hadoop-aws-3.3.2.jar
+      - ./lib/hadoop-common-3.3.2.jar:/opt/hive/lib/hadoop-common-3.3.2.jar
+      - ./lib/hadoop-auth-3.3.2.jar:/opt/hive/lib/hadoop-auth-3.3.2.jar
+      - ./lib/hadoop-shaded-guava-1.1.1.jar:/opt/hive/lib/hadoop-shaded-guava-1.1.1.jar
+      - ./lib/aws-java-sdk-bundle-1.11.1026.jar:/opt/hive/lib/aws-java-sdk-bundle-1.11.1026.jar
       
   hiveserver2:
     image: apache/hive:3.1.3
@@ -65,12 +65,12 @@ services:
       SERVICE_OPTS: -Dhive.metastore.uris=thrift://hivemetastore:9083
       IS_RESUME: 'true'
     volumes:
-      - /home/psobczak/PycharmProjects/DataLakehouse/conf/hive-site.xml:/opt/hive/conf/hive-site.xml
-      - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-aws-3.3.2.jar:/opt/hive/lib/hadoop-aws-3.3.2.jar
-      - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-common-3.3.2.jar:/opt/hive/lib/hadoop-common-3.3.2.jar
-      - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-auth-3.3.2.jar:/opt/hive/lib/hadoop-auth-3.3.2.jar
-      - /home/psobczak/PycharmProjects/DataLakehouse/hadoop-shaded-guava-1.1.1.jar:/opt/hive/lib/hadoop-shaded-guava-1.1.1.jar
-      - /home/psobczak/PycharmProjects/DataLakehouse/aws-java-sdk-bundle-1.11.1026.jar:/opt/hive/lib/aws-java-sdk-bundle-1.11.1026.jar
+      - ./conf/hive-site.xml:/opt/hive/conf/hive-site.xml
+      - ./lib/hadoop-aws-3.3.2.jar:/opt/hive/lib/hadoop-aws-3.3.2.jar
+      - ./lib/hadoop-common-3.3.2.jar:/opt/hive/lib/hadoop-common-3.3.2.jar
+      - ./lib/hadoop-auth-3.3.2.jar:/opt/hive/lib/hadoop-auth-3.3.2.jar
+      - ./lib/hadoop-shaded-guava-1.1.1.jar:/opt/hive/lib/hadoop-shaded-guava-1.1.1.jar
+      - ./lib/aws-java-sdk-bundle-1.11.1026.jar:/opt/hive/lib/aws-java-sdk-bundle-1.11.1026.jar
   
 
 networks:

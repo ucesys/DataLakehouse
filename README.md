@@ -8,15 +8,17 @@ Nessie catalog is supported as Dremio Data Source for Dremio >= 24.X, prior to t
 As a result, for older non-aws Dremio installations, Hive Metastore remains the only choice for Iceberg Catalog.
 The goal of this repository is to create a setup with HMS as our Iceberg Catalog instead of Nessie.
 
-# Step 0: Start MinIO and Dremio
+# Step 0: Launch MinIO and Dremio
 ### MinIO
 *1. Start minio*  
 ```buildoutcfg
 docker-compose up minioserver
 ```
 *2. Go to localhost:9001 and login minioadmin/minioadmin*  
-*3. Create the very fist bucket warehouse-bucket*  
-*4. Copy and paster access/secret key to .env.TEMPLATE file*  
+*3. Create the very fist bucket called "warehouse-bucket"*  
+*\*HMS doesn't allow top-level bucket directory to serve as warehouse dir, 
+that's why our warehouse dir will be warehouse-bucket/warehouse*   
+*4. Copy and paste access/secret key to .env.TEMPLATE file*  
 *5. Rename .env.TEMPLATE to .env*
 
 ### Dremio
@@ -26,40 +28,15 @@ docker-compose up dremio
 ```
 *2. Go to localhost:9047 and create your admin account*  
 
-# Architecture A: Nessie as Iceberg Catalog (Dremio >= 24.x)
-### Nessie
-*Start Nessie in new terminal window*
-```buildoutcfg
-docker-compose up nessie
-```
-### Connect Spark to Nessie Iceberg Catalog
-*1. Start spark notebook in new terminal window*  
-```buildoutcfg
-docker-compose up notebook
-```
-*2. In the logs when this container open look for output the looks
- like the following and copy and paste the URL into your browser.*
- ```buildoutcfg
-notebook  |  or http://127.0.0.1:8888/?token=9db2c8a4459b4aae3132dfabdf9bf4396393c608816743a9
-```
-*3. In the jupyter notebook go to spark_notebooks/spark_minio_nessie_iceberg*  
-*4. Run the notebook*   
-*5. Check if data exists in MinIO*
 
-### Connect Dremio to Nessie Iceberg Catalog
-*1. Go to Add Source -> Nessie and configure The following:*  
-<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-1.png" width="800"></img>  
-<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-2.png" width="800"></img>  
-*2. Save Data source, you should be able to see and query the data*
-
-# Architecture B: HMS as Iceberg Catalog
+# Architecture A: HMS as Iceberg Catalog
 ### Hive Metastore
 *1. Download hadoop & aws dependencies for hive metastore, we will be mounting them later on as volumes*  
-Either use the following script:
+You can either use the following script:
 ```buildoutcfg
 scripts/download-jars.sh
 ```
-Or download the following jars manually and place them in lib directory:
+or download the following jars manually and place them in lib directory:
 - https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-common/3.3.2/hadoop-common-3.3.2.jar
 - https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.2/hadoop-aws-3.3.2.jar
 - https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-auth/3.3.2/hadoop-auth-3.3.2.jar
@@ -96,3 +73,30 @@ spark-shell --conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.10
 *1. From UI Select Add Source -> Metastores -> Hive 3.x*   
 *2. Configure Hive Metastore host, go to Advanced options and specify the following properties:*  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config.png" width="800"></img>  
+
+
+# Architecture B: Nessie as Iceberg Catalog (Dremio >= 24.x)
+### Nessie
+*Start Nessie in new terminal window*
+```buildoutcfg
+docker-compose up nessie
+```
+### Connect Spark to Nessie Iceberg Catalog
+*1. Start spark notebook in new terminal window*  
+```buildoutcfg
+docker-compose up notebook
+```
+*2. In the logs when this container open look for output the looks
+ like the following and copy and paste the URL into your browser.*
+ ```buildoutcfg
+notebook  |  or http://127.0.0.1:8888/?token=9db2c8a4459b4aae3132dfabdf9bf4396393c608816743a9
+```
+*3. In the jupyter notebook go to spark_notebooks/spark_minio_nessie_iceberg*  
+*4. Run the notebook*   
+*5. Check if data exists in MinIO*
+
+### Connect Dremio to Nessie Iceberg Catalog
+*1. Go to Add Source -> Nessie and configure The following:*  
+<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-1.png" width="800"></img>  
+<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-2.png" width="800"></img>  
+*2. Save Data source, you should be able to see and query the data*
