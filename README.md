@@ -82,4 +82,5 @@ spark-shell --conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.10
 
 ### Dremio
 *1. From UI Select Add Source -> Metastores -> Hive 3.x*   
-*2. Configure Hive Metastore host, go to Advanced options and specify the following properties:*
+*2. Configure Hive Metastore host, go to Advanced options and specify the following properties:*  
+<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config.png" width="1000"></img>  
