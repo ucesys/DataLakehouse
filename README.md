@@ -8,7 +8,7 @@ Nessie catalog is supported as Dremio Data Source for Dremio >= 24.X,
 prior to that we have to use either Hive Metastore or Glue as Iceberg Catalog.
 The goal of this repository is to create a setup with HMS as our Iceberg Catalog instead of Nessie.
 
-# Start MinIO and Dremio
+# Step 0: Start MinIO and Dremio
 ### MinIO
 *1. Start minio*  
 ```buildoutcfg
@@ -26,7 +26,7 @@ docker-compose up dremio
 ```
 *2. Go to localhost:9047 and create your admin account*  
 
-# Nessie as Iceberg Catalog (Dremio >= 24.x)
+# Architecture A: Nessie as Iceberg Catalog (Dremio >= 24.x)
 ### Nessie
 *Start Nessie in new terminal window*
 ```buildoutcfg
@@ -48,9 +48,11 @@ notebook  |  or http://127.0.0.1:8888/?token=9db2c8a4459b4aae3132dfabdf9bf439639
 
 ### Connect Dremio to Nessie Iceberg Catalog
 *1. Go to Add Source -> Nessie and configure The following:*  
+<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-1.png" width="800"></img>  
+<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-2.png" width="800"></img>  
 *2. Save Data source, you should be able to see and query the data*
 
-# Hive Metastore as Iceberg Catalog(Dremio <= 23.X)
+# Architecture B: HMS as Iceberg Catalog(Dremio <= 23.X)
 ### Hive Metastore
 *Start Hive Metastore in new terminal window*
 ```buildoutcfg
@@ -81,4 +83,4 @@ spark-shell --conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.10
 ### Connect Dremio to Hive Metastore Iceberg Catalog 
 *1. From UI Select Add Source -> Metastores -> Hive 3.x*   
 *2. Configure Hive Metastore host, go to Advanced options and specify the following properties:*  
-<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config.png" width="1000"></img>  
+<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config.png" width="800"></img>  
