@@ -54,7 +54,19 @@ notebook  |  or http://127.0.0.1:8888/?token=9db2c8a4459b4aae3132dfabdf9bf439639
 
 # Architecture B: HMS as Iceberg Catalog
 ### Hive Metastore
-*Start Hive Metastore in new terminal window*
+*1. Download hadoop & aws dependencies for hive metastore, we will be mounting them later on as volumes*  
+Either use the following script:
+```buildoutcfg
+scripts/download-jars.sh
+```
+Or download the following jars manually and place them in lib directory:
+- https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-common/3.3.2/hadoop-common-3.3.2.jar
+- https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.2/hadoop-aws-3.3.2.jar
+- https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-auth/3.3.2/hadoop-auth-3.3.2.jar
+- https://repo1.maven.org/maven2/org/apache/hadoop/thirdparty/hadoop-shaded-guava/1.1.1/hadoop-shaded-guava-1.1.1.jar
+- https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.1026/aws-java-sdk-bundle-1.11.1026.jar
+
+*2. Start Hive Metastore in new terminal window*
 ```buildoutcfg
 docker-compose up hivemetastore
 ```
