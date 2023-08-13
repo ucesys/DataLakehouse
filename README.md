@@ -17,7 +17,8 @@ docker-compose up minioserver
 ```
 *2. Go to localhost:9001 and login minioadmin/minioadmin*  
 *3. Create the very fist bucket warehouse-bucket*  
-*4. Generate access keys and copy them to .env file*
+*4. Copy and paster access/secret key to .env.TEMPLATE file*  
+*5. Rename .env.TEMPLATE to .env*
 
 ### Nessie
 ```buildoutcfg
