@@ -26,7 +26,7 @@ that's why our warehouse dir will be warehouse-bucket/warehouse*
 *5. Rename .env.TEMPLATE to .env*
 
 ### Dremio
-*1. Start dremio in new terminal window*
+*1. Start dremio in a new terminal window*
 ```buildoutcfg
 docker-compose up dremio
 ```
@@ -47,18 +47,23 @@ or download the following jars manually and place them in lib directory:
 - [org.apache.hadoop.thirdparty:hadoop-shaded-guava:1.1.1](https://mvnrepository.com/artifact/org.apache.hadoop.thirdparty/hadoop-shaded-guava/1.1.1)
 - [com.amazonaws:aws-java-sdk-bundle:1.11.1026](https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-bundle/1.11.1026)
 
-*2. Start Hive Metastore in new terminal window*
+*2. Start Hive Metastore in a new terminal window*
 ```buildoutcfg
 docker-compose up hivemetastore
 ```
 
 ### Connect Spark to Hive Metastore Iceberg Catalog 
-*1. Exec into spark container*
+*1. Start spark container in a new terminal window*
+```buildoutcfg
+sudo docker-compose up spark_notebook
+```
+
+*2. Exec into spark container*
 ```buildoutcfg
 sudo docker exec -it notebook bash
 ```
 
-*2. Run spark-shell session with HMS as Iceberg Catalog*
+*3. Run spark-shell session with HMS as Iceberg Catalog*
 ```buildoutcfg
 spark-shell \
 --conf spark.sql.catalog.type=hive \
@@ -81,7 +86,7 @@ spark-shell --conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.10
 
 # Architecture B: Nessie as Iceberg Catalog (Dremio >= 24.x)
 ### Nessie
-*Start Nessie in new terminal window*
+*Start Nessie in a new terminal window*
 ```buildoutcfg
 docker-compose up nessie
 ```
