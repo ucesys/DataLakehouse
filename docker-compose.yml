@@ -21,15 +21,25 @@ services:
     container_name: minio
     command: server /data --console-address ":9001"
 
-  spark_notebook:
+  spark_notebook_hms:
     image: alexmerced/spark33-notebook
     ports: 
       - 8888:8888
-    env_file: .env
-    container_name: notebook
+    container_name: spark_notebook_hms
+    environment:
+      HADOOP_CONF_DIR: /opt/spark/conf/
     volumes:
       - ./spark_notebooks:/home/docker/spark_notebooks
       - ./conf/hive-site.xml:/opt/spark/conf/hive-site.xml
+
+  spark_notebook_nessie:
+    image: alexmerced/spark33-notebook
+    ports:
+      - 8888:8888
+    env_file: .env
+    container_name: spark_notebook_nessie
+    volumes:
+      - ./spark_notebooks:/home/docker/spark_notebooks
 
   nessie:
     image: projectnessie/nessie

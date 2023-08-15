@@ -25,79 +25,75 @@
 <!-- users do not have to edit hadoop configuration files (that may be managed as a centralized -->
 <!-- resource).                                                                                 -->
 
-<!-- Hive Execution Parameters -->
-<property>
-  <name>hadoop.tmp.dir</name>
-  <value>/tmp/hadoop-tmp</value>
-  <description>A base for other temporary directories.</description>
-</property>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/tmp/hadoop-tmp</value>
+    <description>A base for other temporary directories.</description>
+  </property>
 
-<property>
-  <name>hive.metastore.schema.verification</name>
-  <value>false</value>
-</property>
+  <property>
+    <name>hive.metastore.schema.verification</name>
+    <value>false</value>
+  </property>
 
-<property>
-  <!--  this should eventually be deprecated since the metastore should supply this -->
-  <name>hive.metastore.warehouse.dir</name>
-  <value>s3a://warehouse-bucket/warehouse</value>
-  <description>For HMS warehouse dir cannot be top level bucket directory</description>
-</property>
+  <property>
+    <name>hive.metastore.sasl.enabled</name>
+    <value>false</value>
+    <description>Turn off kerberos</description>
+  </property>
 
-<property>
-  <!--  this should eventually be deprecated since the metastore should supply this -->
-  <name>hive.metastore.uris</name>
-  <value>thrift://hivemetastore:9083</value>
-  <description></description>
-</property>
+  <property>
+    <name>fs.s3a.path.style.access</name>
+    <value>true</value>
+    <description>By default this is false which results in http requests going to BUCKET.hostname which results in unresolved hostname</description>
+  </property>
 
-<property>
-  <!--  this should eventually be deprecated since the metastore should supply this -->
-  <name>fs.s3a.access.key</name>
-  <value>J6mKXHKvvKClz4vEMPtu</value>
-  <description></description>
-</property>
+  <property>
+    <name>hadoop.proxyuser.hive.groups</name>
+    <value>*</value>
+    <description>Give access to hive group to Metastore API</description>
+  </property>
 
-<property>
-  <!--  this should eventually be deprecated since the metastore should supply this -->
-  <name>fs.s3a.secret.key</name>
-  <value>VSGEGt0NhuInr7oZOsdtES2jKjkjUJa65YPRXE2O</value>
-  <description></description>
-</property>
+  <property>
+    <name>hadoop.proxyuser.hive.hosts</name>
+      <description>Give access to hive user to Metastore API</description>
+    <value>*</value>
+  </property>
 
-<property>
-  <name>fs.s3a.aws.credentials.provider</name>
-  <value>org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider</value>
-  <description>Uses access key/secret</description>
-</property>
+  <property>
+    <name>fs.s3a.aws.credentials.provider</name>
+    <value>org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider</value>
+    <description>Uses access key/secret</description>
+  </property>
 
-<property>
-  <name>fs.s3a.endpoint</name>
-  <value>http://minioserver:9000</value>
-</property>
+  <property>
+    <name>hive.metastore.uris</name>
+    <value>thrift://hivemetastore:9083</value>
+    <description></description>
+  </property>
 
-<property>
-  <name>hive.metastore.sasl.enabled</name>
-  <value>false</value>
-  <description>Turn off kerberos</description>
-</property>
+  <property>
+    <name>fs.s3a.endpoint</name>
+    <value>http://minioserver:9000</value>
+    <description>http:// prefix is required by HMS</description>
+  </property>
 
-<property>
-  <name>fs.s3a.path.style.access</name>
-  <value>true</value>
-  <description>By default this is false which results in http requests going to BUCKET.hostname which results in unresolved hostname</description>
-</property>
+  <property>
+    <name>hive.metastore.warehouse.dir</name>
+    <value>s3a://warehouse-hms/warehouse</value>
+    <description>For HMS warehouse dir cannot be top level bucket directory</description>
+  </property>
 
-<property>
-  <name>hadoop.proxyuser.hive.groups</name>
-  <value>*</value>
-  <description>Give access to hive group to Metastore API</description>
-</property>
+  <property>
+    <name>fs.s3a.access.key</name>
+    <value>J6mKXHKvvKClz4vEMPtu</value>
+    <description></description>
+  </property>
 
-<property>
-  <name>hadoop.proxyuser.hive.hosts</name>
-    <description>Give access to hive user to Metastore API</description>
-  <value>*</value>
-</property>
+  <property>
+    <name>fs.s3a.secret.key</name>
+    <value>VSGEGt0NhuInr7oZOsdtES2jKjkjUJa65YPRXE2O</value>
+    <description></description>
+  </property>
 
 </configuration>

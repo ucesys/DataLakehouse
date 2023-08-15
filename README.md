@@ -19,11 +19,7 @@ Due to concurrency problems with Hadoop Catalog, for <= 23.X non-aws Dremio inst
 docker-compose up minioserver
 ```
 *2. Go to localhost:9001 and login minioadmin/minioadmin*  
-*3. Create the very fist bucket called "warehouse-bucket"*  
-*\*HMS doesn't allow top-level bucket directory to serve as warehouse dir, 
-that's why our warehouse dir will be warehouse-bucket/warehouse*   
-*4. Copy and paste access/secret key to .env.TEMPLATE file*  
-*5. Rename .env.TEMPLATE to .env*
+*3. In the UI, go to Access keys -> Create new key, generate new credentials and download them, we will be using them later on.*  
 
 ### Dremio
 *1. Start dremio in a new terminal window*
@@ -31,6 +27,7 @@ that's why our warehouse dir will be warehouse-bucket/warehouse*
 docker-compose up dremio
 ```
 *2. Go to localhost:9047 and create your admin account*  
+*3. Our Dremio instance is to create and query Data Sources!*
 
 
 # Architecture A: HMS as Iceberg Catalog
@@ -47,7 +44,33 @@ or download the following jars manually and place them in lib directory:
 - [org.apache.hadoop.thirdparty:hadoop-shaded-guava:1.1.1](https://mvnrepository.com/artifact/org.apache.hadoop.thirdparty/hadoop-shaded-guava/1.1.1)
 - [com.amazonaws:aws-java-sdk-bundle:1.11.1026](https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-bundle/1.11.1026)
 
-*2. Start Hive Metastore in a new terminal window*
+*2. Go to MinIO and create a bucket for our Iceberg Tables called "warehouse-hms"*  
+*\*HMS doesn't allow top-level bucket directory to serve as warehouse dir, 
+that's why our warehouse dir will be warehouse-bucket/warehouse*   
+
+*3. Open conf/hive-site.xml and edit the following properties:* 
+```buildoutcfg
+  <property>
+    <name>hive.metastore.warehouse.dir</name>
+    <value>s3a://<BUCKET-NAME>/warehouse</value>
+    <description>For HMS warehouse dir cannot be top level bucket directory</description>
+  </property>
+
+  <property>
+    <name>fs.s3a.access.key</name>
+    <value><MinIO ACCESS KEY></value>
+    <description></description>
+  </property>
+
+  <property>
+    <name>fs.s3a.secret.key</name>
+    <value><MinIO SECRET KEY></value>
+    <description></description>
+  </property>
+```
+
+
+*4. Start Hive Metastore in a new terminal window*
 ```buildoutcfg
 docker-compose up hivemetastore
 ```
@@ -91,18 +114,20 @@ spark-shell --conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.10
 docker-compose up nessie
 ```
 ### Connect Spark to Nessie Iceberg Catalog
-*1. Start spark notebook in new terminal window*  
+*1. Use access & secret keys from credentials.json 
+to fill AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY values in .env file*  
+*2. Start spark notebook in new terminal window*  
 ```buildoutcfg
 docker-compose up notebook
 ```
-*2. In the logs when this container open look for output the looks
+*3. In the logs when this container open look for output the looks
  like the following and copy and paste the URL into your browser.*
  ```buildoutcfg
 notebook  |  or http://127.0.0.1:8888/?token=9db2c8a4459b4aae3132dfabdf9bf4396393c608816743a9
 ```
-*3. In the jupyter notebook go to spark_notebooks/spark_minio_nessie_iceberg*  
-*4. Run the notebook*   
-*5. Check if data exists in MinIO*
+*4. In the jupyter notebook go to spark_notebooks/spark_minio_nessie_iceberg*  
+*5. Run the notebook*   
+*6. Check if data exists in MinIO*
 
 ### Connect Dremio to Nessie Iceberg Catalog
 *1. Go to Add Source -> Nessie and configure The following:*  
