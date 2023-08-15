@@ -68,25 +68,6 @@ services:
       - ./lib/hadoop-auth-3.3.2.jar:/opt/hive/lib/hadoop-auth-3.3.2.jar
       - ./lib/hadoop-shaded-guava-1.1.1.jar:/opt/hive/lib/hadoop-shaded-guava-1.1.1.jar
       - ./lib/aws-java-sdk-bundle-1.11.1026.jar:/opt/hive/lib/aws-java-sdk-bundle-1.11.1026.jar
-      
-  hiveserver2:
-    image: apache/hive:3.1.3
-    container_name: hiveserver2
-    ports:
-      - "10000:10000"
-      - "10002:10002"
-    environment:
-      SERVICE_NAME: hiveserver2
-      SERVICE_OPTS: -Dhive.metastore.uris=thrift://hivemetastore:9083
-      IS_RESUME: 'true'
-    volumes:
-      - ./conf/hive-site.xml:/opt/hive/conf/hive-site.xml
-      - ./lib/hadoop-aws-3.3.2.jar:/opt/hive/lib/hadoop-aws-3.3.2.jar
-      - ./lib/hadoop-common-3.3.2.jar:/opt/hive/lib/hadoop-common-3.3.2.jar
-      - ./lib/hadoop-auth-3.3.2.jar:/opt/hive/lib/hadoop-auth-3.3.2.jar
-      - ./lib/hadoop-shaded-guava-1.1.1.jar:/opt/hive/lib/hadoop-shaded-guava-1.1.1.jar
-      - ./lib/aws-java-sdk-bundle-1.11.1026.jar:/opt/hive/lib/aws-java-sdk-bundle-1.11.1026.jar
-  
 
 networks:
   default:

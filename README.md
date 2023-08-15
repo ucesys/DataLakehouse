@@ -117,6 +117,7 @@ spark-shell \
 docker-compose up nessie
 ```
 ### Connect Spark to Nessie Iceberg Catalog
+*0. Go to MinIO and create a bucket for our Iceberg Tables called "warehouse-nessie"*  
 *1. Use access & secret keys from credentials.json 
 to fill AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY values in .env file*
 ```buildoutcfg
