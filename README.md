@@ -72,21 +72,29 @@ that's why our warehouse dir will be warehouse-bucket/warehouse*
 
 *4. Start Hive Metastore in a new terminal window*
 ```buildoutcfg
-docker-compose up hivemetastore
+sudo docker-compose up hivemetastore
 ```
 
-### Connect Spark to Hive Metastore Iceberg Catalog 
-*1. Start spark container in a new terminal window*
+### Connect Spark to Hive Metastore Iceberg Catalog
+*1. Start spark notebook in a new terminal window*  
 ```buildoutcfg
-sudo docker-compose up spark_notebook
+docker-compose up spark_notebook_hms
 ```
+*2. In the logs when this container open look for output the looks
+ like the following and copy and paste the URL into your browser.*
+ ```buildoutcfg
+notebook  |  or http://127.0.0.1:8888/?token=9db2c8a4459b4aae3132dfabdf9bf4396393c608816743a9
+```
+*3. In the jupyter UI open spark_hms.ipynb*  
+*4. Run the notebook*   
+*5. Check if data exists in MinIO*`
 
-*2. Exec into spark container*
+*\*In order to run spark in spark-shell or spark-sql, exec into spark container:*
 ```buildoutcfg
-sudo docker exec -it notebook bash
+sudo docker exec -it spark_notebook_hms bash
 ```
 
-*3. Run spark-shell session with HMS as Iceberg Catalog*
+and run spark-shell session with HMS as Iceberg Catalog*
 ```buildoutcfg
 spark-shell \
 --conf spark.sql.catalog.type=hive \
@@ -96,18 +104,13 @@ spark-shell \
 --conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.1026,org.apache.hadoop:hadoop-aws:3.3.2,org.apache.iceberg:iceberg-spark-runtime-3.3_2.12:1.3.1,org.apache.iceberg:iceberg-spark3-extensions:0.13.1
 ```
 
-*\*To Run spark-shell with HMS(non-iceberg tables)*
-```buildoutcfg
-spark-shell --conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.1026,org.apache.hadoop:hadoop-aws:3.3.2 
-```
-
 ### Connect Dremio to Hive Metastore Iceberg Catalog 
 *1. From UI Select Add Source -> Metastores -> Hive 3.x*   
 *2. Configure Hive Metastore host, go to Advanced options and specify the following properties:*  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config.png" width="800"></img>  
 
 
-# Architecture B: Nessie as Iceberg Catalog (Dremio >= 24.x)
+# Architecture B: Nessie as Iceberg Catalog
 ### Nessie
 *Start Nessie in a new terminal window*
 ```buildoutcfg
@@ -115,17 +118,22 @@ docker-compose up nessie
 ```
 ### Connect Spark to Nessie Iceberg Catalog
 *1. Use access & secret keys from credentials.json 
-to fill AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY values in .env file*  
-*2. Start spark notebook in new terminal window*  
+to fill AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY values in .env file*
 ```buildoutcfg
-docker-compose up notebook
+AWS_ACCESS_KEY_ID=<MinIO ACCESS KEY>
+AWS_SECRET_ACCESS_KEY=<MinIO SECRET KEY>
+WAREHOUSE_NESSIE=s3a://<NESSIE WAREHOUSE BUCKET>/
+```
+*2. Start spark notebook in a new terminal window*  
+```buildoutcfg
+docker-compose up spark_notebook_nessie
 ```
 *3. In the logs when this container open look for output the looks
  like the following and copy and paste the URL into your browser.*
  ```buildoutcfg
-notebook  |  or http://127.0.0.1:8888/?token=9db2c8a4459b4aae3132dfabdf9bf4396393c608816743a9
+notebook  |  or http://127.0.0.1:8889/?token=9db2c8a4459b4aae3132dfabdf9bf4396393c608816743a9
 ```
-*4. In the jupyter notebook go to spark_notebooks/spark_minio_nessie_iceberg*  
+*4. In the jupyter UI open spark_nessie.ipynb*  
 *5. Run the notebook*   
 *6. Check if data exists in MinIO*
 
