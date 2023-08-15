@@ -38,7 +38,10 @@ services:
       - 8889:8889
     environment:
       JUPYTER_PORT: 8889
-    env_file: .env
+      AWS_REGION: us-east-1
+      NESSIE_URI: http://nessie:19120/api/v1
+      AWS_S3_ENDPOINT: http://minioserver:9000
+    env_file: spark_nessie.env
     container_name: spark_notebook_nessie
     volumes:
       - ./spark_notebooks/spark_nessie.ipynb:/home/jovyan/spark_nessie.ipynb
