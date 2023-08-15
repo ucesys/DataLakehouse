@@ -1,14 +1,19 @@
 version: "3.9"
 
 services:
-  dremio:
+  dremio24:
     platform: linux/x86_64
-    image: dremio/dremio-oss:latest
+    image: dremio/dremio-oss:24.1
     ports:
       - 9047:9047
-      - 31010:31010
-      - 32010:32010
-    container_name: dremio
+    container_name: dremio24
+
+  dremio23:
+    platform: linux/x86_64
+    image: dremio/dremio-oss:23.1
+    ports:
+      - 9047:9047
+    container_name: dremio23
 
   minioserver:
     image: minio/minio

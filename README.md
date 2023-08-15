@@ -21,16 +21,7 @@ docker-compose up minioserver
 *2. Go to localhost:9001 and login minioadmin/minioadmin*  
 *3. In the UI, go to Access keys -> Create new key, generate new credentials and download them, we will be using them later on.*  
 
-### Dremio
-*1. Start dremio in a new terminal window*
-```buildoutcfg
-docker-compose up dremio
-```
-*2. Go to localhost:9047 and create your admin account*  
-*3. Our Dremio instance is to create and query Data Sources!*
-
-
-# Architecture A: HMS as Iceberg Catalog
+# Architecture A: Dremio 23.1 with HMS as Iceberg Catalog
 ### Hive Metastore
 *1. Download hadoop & aws dependencies for hive metastore, we will be mounting them later on as volumes*  
 You can either use the following script:
@@ -104,13 +95,18 @@ spark-shell \
 --conf spark.jars.packages=com.amazonaws:aws-java-sdk-bundle:1.11.1026,org.apache.hadoop:hadoop-aws:3.3.2,org.apache.iceberg:iceberg-spark-runtime-3.3_2.12:1.3.1,org.apache.iceberg:iceberg-spark3-extensions:0.13.1
 ```
 
-### Connect Dremio to Hive Metastore Iceberg Catalog 
-*1. From UI Select Add Source -> Metastores -> Hive 3.x*   
-*2. Configure Hive Metastore host, go to Advanced options and specify the following properties:*  
+### Connect Dremio 23.1 to Hive Metastore Iceberg Catalog 
+*1. Start dremio in a new terminal window*
+```buildoutcfg
+docker-compose up dremio23
+```
+*2. Go to localhost:9047 and create your admin account*  
+*3. From UI Select Add Source -> Metastores -> Hive 3.x*   
+*4. Configure Hive Metastore host, go to Advanced options and specify the following properties:*  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config.png" width="800"></img>  
 
 
-# Architecture B: Nessie as Iceberg Catalog
+# Architecture B: Dremio 24.1 with Nessie as Iceberg Catalog
 ### Nessie
 *Start Nessie in a new terminal window*
 ```buildoutcfg
@@ -138,8 +134,13 @@ notebook  |  or http://127.0.0.1:8889/?token=9db2c8a4459b4aae3132dfabdf9bf439639
 *5. Run the notebook*   
 *6. Check if data exists in MinIO*
 
-### Connect Dremio to Nessie Iceberg Catalog
-*1. Go to Add Source -> Nessie and configure The following:*  
+### Connect Dremio 24.1 to Nessie Iceberg Catalog
+*1. Start dremio in a new terminal window*
+```buildoutcfg
+docker-compose up dremio24
+```
+*2. Go to localhost:9047 and create your admin account*  
+*3. Go to Add Source -> Nessie and configure The following:*  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-1.png" width="800"></img>  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-2.png" width="800"></img>  
-*2. Save Data source, you should be able to see and query the data*
+*4. Save Data source, you should be able to see and query the data*
