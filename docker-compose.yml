@@ -22,24 +22,26 @@ services:
     command: server /data --console-address ":9001"
 
   spark_notebook_hms:
-    image: alexmerced/spark33-notebook
+    image: jupyter/pyspark-notebook:spark-3.3.2
     ports: 
       - 8888:8888
     container_name: spark_notebook_hms
     environment:
-      HADOOP_CONF_DIR: /opt/spark/conf/
+      HADOOP_CONF_DIR: /usr/local/spark/conf/
     volumes:
-      - ./spark_notebooks/spark_hms.ipynb:/home/docker/spark_hms.ipynb
-      - ./conf/hive-site.xml:/opt/spark/conf/hive-site.xml
+      - ./spark_notebooks/spark_hms.ipynb:/home/jovyan/spark_hms.ipynb
+      - ./conf/hive-site.xml:/usr/local/spark/conf/hive-site.xml
 
   spark_notebook_nessie:
-    image: alexmerced/spark33-notebook
+    image: jupyter/pyspark-notebook:spark-3.3.2
     ports:
-      - 8888:8888
+      - 8889:8889
+    environment:
+      JUPYTER_PORT: 8889
     env_file: .env
     container_name: spark_notebook_nessie
     volumes:
-      - ./spark_notebooks/spark_nessie.ipynb:/home/docker/spark_nessie.ipynb
+      - ./spark_notebooks/spark_nessie.ipynb:/home/jovyan/spark_nessie.ipynb
 
   nessie:
     image: projectnessie/nessie
