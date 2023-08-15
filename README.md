@@ -12,7 +12,7 @@ Alex's Merced in his  [Data Engineering: Create a Apache Iceberg based Data Lake
 For Dremio versions <= 23.X, we are left with Hadoop, Glue and Hive Metastore options for Iceberg Catalog.
 Due to concurrency problems with Hadoop Catalog, for <= 23.X non-aws Dremio installations, Hive Metastore remains the only choice for Iceberg Catalog.
 
-# Step 0: Launch MinIO and Dremio
+# Step 0: Launch MinIO
 ### MinIO
 *1. Start minio*  
 ```buildoutcfg
@@ -103,7 +103,8 @@ docker-compose up dremio23
 *2. Go to localhost:9047 and create your admin account*  
 *3. From UI Select Add Source -> Metastores -> Hive 3.x*   
 *4. Configure Hive Metastore host, go to Advanced options and specify the following properties:*  
-<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config.png" width="800"></img>  
+<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config-1.png" width="800"></img>  
+<img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config-2.png" width="800"></img>  
 
 
 # Architecture B: Dremio 24.1 with Nessie as Iceberg Catalog
