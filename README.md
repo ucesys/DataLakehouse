@@ -71,14 +71,9 @@ sudo docker-compose up hivemetastore
 ```buildoutcfg
 docker-compose up spark_notebook_hms
 ```
-*2. In the logs when this container open look for output the looks
- like the following and copy and paste the URL into your browser.*
- ```buildoutcfg
-notebook  |  or http://127.0.0.1:8888/?token=9db2c8a4459b4aae3132dfabdf9bf4396393c608816743a9
-```
-*3. In the jupyter UI open spark_hms.ipynb*  
-*4. Run the notebook*   
-*5. Check if data exists in MinIO*`
+*2. Go to http://127.0.0.1:8888/lab/tree/spark_hms.ipynb*  
+*3. Run the notebook & play with Iceberg tables*  
+*4. Check if data & metadata exists in MinIO*
 
 *\*In order to run spark in spark-shell or spark-sql, exec into spark container:*
 ```buildoutcfg
@@ -126,22 +121,34 @@ WAREHOUSE_NESSIE=s3a://<NESSIE WAREHOUSE BUCKET>/
 ```buildoutcfg
 docker-compose up spark_notebook_nessie
 ```
-*3. In the logs when this container open look for output the looks
- like the following and copy and paste the URL into your browser.*
- ```buildoutcfg
-notebook  |  or http://127.0.0.1:8889/?token=9db2c8a4459b4aae3132dfabdf9bf4396393c608816743a9
-```
-*4. In the jupyter UI open spark_nessie.ipynb*  
-*5. Run the notebook*   
-*6. Check if data exists in MinIO*
+*2. Go to http://127.0.0.1:8889/lab/tree/spark_nessie.ipynb*  
+*3. Run the notebook & play with Iceberg tables*  
+*4. Check if data & metadata exists in MinIO*
 
 ### Connect Dremio 24.1 to Nessie Iceberg Catalog
 *1. Start dremio in a new terminal window*
 ```buildoutcfg
-docker-compose up dremio24
+sudo docker-compose up dremio24
 ```
 *2. Go to localhost:9047 and create your admin account*  
 *3. Go to Add Source -> Nessie and configure The following:*  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-1.png" width="800"></img>  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-2.png" width="800"></img>  
 *4. Save Data source, you should be able to see and query the data*
+
+
+# FAQ
+java.lang.RuntimeException: Failed to create namespace demo_hms in Hive Metastore      
+Caused by: MetaException(message:Got exception: java.nio.file.AccessDeniedException s3a://warehouse-hms/warehouse/demo_hms.db: getFileStatus on s3a://warehouse-hms/warehouse/demo_hms.db: com.amazonaws.services.s3.model.AmazonS3Exception: Forbidden (Service: Amazon S3; Status Code: 403; Error Code: 403 Forbidden;
+
+Reason: Hive Metastore cannot access MinIO bucket, probably hive-site.xml is misconfigured or access keys were not created in MinIO  
+Solution: Check the following properties in hive-site.xml: fs.s3a.secret.key, fs.s3a.access.key, hive.metastore.warehouse.dir
+Note: Changing hive-site.xml requires Hive restarting Metastore and Spark
+
+Schema initialization failed! when starting Hive Metastore
+Reason: Hive Metastore cannot initialize underlying database because it was already initialized
+Solution: Remove existing metastore container and start a new one
+```buildoutcfg
+sudo docker-compose rm hivemetastore
+sudo docker-compose up hivemetastore
+```

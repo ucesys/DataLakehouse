@@ -86,13 +86,13 @@
 
   <property>
     <name>fs.s3a.access.key</name>
-    <value>J6mKXHKvvKClz4vEMPtu</value>
+    <value>8NG5S2kiTlVx8IXxXrYs</value>
     <description></description>
   </property>
 
   <property>
     <name>fs.s3a.secret.key</name>
-    <value>VSGEGt0NhuInr7oZOsdtES2jKjkjUJa65YPRXE2O</value>
+    <value>QetGEVnQjuMaQ44lgbEJ8XEvk6QdfFdQLtyaC8Mc</value>
     <description></description>
   </property>
 
