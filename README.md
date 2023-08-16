@@ -16,9 +16,9 @@ Due to concurrency problems with Hadoop Catalog, for <= 23.X non-aws Dremio inst
 ### MinIO
 *1. Start minio*  
 ```buildoutcfg
-docker-compose up minioserver
+sudo docker-compose up minioserver
 ```
-*2. Go to localhost:9001 and login minioadmin/minioadmin*  
+*2. Go to http://localhost:9001 and login using minioadmin/minioadmin credentials*  
 *3. In the UI, go to Access keys -> Create new key, generate new credentials and download them, we will be using them later on.*  
 
 # Architecture A: Dremio 23.1 with HMS as Iceberg Catalog
@@ -69,7 +69,7 @@ sudo docker-compose up hivemetastore
 ### Connect Spark to Hive Metastore Iceberg Catalog
 *1. Start spark notebook in a new terminal window*  
 ```buildoutcfg
-docker-compose up spark_notebook_hms
+sudo docker-compose up spark_notebook_hms
 ```
 *2. Go to http://127.0.0.1:8888/lab/tree/spark_hms.ipynb*  
 *3. Run the notebook & play with Iceberg tables*  
@@ -93,9 +93,9 @@ spark-shell \
 ### Connect Dremio 23.1 to Hive Metastore Iceberg Catalog 
 *1. Start dremio in a new terminal window*
 ```buildoutcfg
-docker-compose up dremio23
+sudo docker-compose up dremio23
 ```
-*2. Go to localhost:9047 and create your admin account*  
+*2. Go to http://localhost:9047 and create your admin account*  
 *3. From UI Select Add Source -> Metastores -> Hive 3.x*   
 *4. Configure Hive Metastore host, go to Advanced options and specify the following properties:*  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config-1.png" width="800"></img>  
@@ -106,7 +106,7 @@ docker-compose up dremio23
 ### Nessie
 *Start Nessie in a new terminal window*
 ```buildoutcfg
-docker-compose up nessie
+sudo docker-compose up nessie
 ```
 ### Connect Spark to Nessie Iceberg Catalog
 *0. Go to MinIO and create a bucket for our Iceberg Tables called "warehouse-nessie"*  
@@ -119,7 +119,7 @@ WAREHOUSE_NESSIE=s3a://<NESSIE WAREHOUSE BUCKET>/
 ```
 *2. Start spark notebook in a new terminal window*  
 ```buildoutcfg
-docker-compose up spark_notebook_nessie
+sudo docker-compose up spark_notebook_nessie
 ```
 *2. Go to http://127.0.0.1:8889/lab/tree/spark_nessie.ipynb*  
 *3. Run the notebook & play with Iceberg tables*  
@@ -130,7 +130,7 @@ docker-compose up spark_notebook_nessie
 ```buildoutcfg
 sudo docker-compose up dremio24
 ```
-*2. Go to localhost:9047 and create your admin account*  
+*2. Go to http://localhost:9047 and create your admin account*  
 *3. Go to Add Source -> Nessie and configure The following:*  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-1.png" width="800"></img>  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-2.png" width="800"></img>  
