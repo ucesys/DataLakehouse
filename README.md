@@ -96,8 +96,7 @@ spark-shell \
 sudo docker-compose up dremio23
 ```
 *2. Go to http://localhost:9047 and create your admin account*  
-*3. From UI Select Add Source -> Metastores -> Hive 3.x*   
-*4. Configure Hive Metastore host, go to Advanced options and specify the following properties:*  
+*3. From UI Select Add Source -> Metastores -> Hive 3.x and configure the following properties:*   
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config-1.png" width="800"></img>  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-hms-minio-config-2.png" width="800"></img>  
 
