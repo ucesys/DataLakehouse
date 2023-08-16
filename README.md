@@ -138,17 +138,19 @@ sudo docker-compose up dremio24
 
 
 # FAQ
-java.lang.RuntimeException: Failed to create namespace demo_hms in Hive Metastore      
-Caused by: MetaException(message:Got exception: java.nio.file.AccessDeniedException s3a://warehouse-hms/warehouse/demo_hms.db: getFileStatus on s3a://warehouse-hms/warehouse/demo_hms.db: com.amazonaws.services.s3.model.AmazonS3Exception: Forbidden (Service: Amazon S3; Status Code: 403; Error Code: 403 Forbidden;
 
-Reason: Hive Metastore cannot access MinIO bucket, probably hive-site.xml is misconfigured or access keys were not created in MinIO  
-Solution: Check the following properties in hive-site.xml: fs.s3a.secret.key, fs.s3a.access.key, hive.metastore.warehouse.dir
-Note: Changing hive-site.xml requires Hive restarting Metastore and Spark
-
-Schema initialization failed! when starting Hive Metastore
-Reason: Hive Metastore cannot initialize underlying database because it was already initialized
-Solution: Remove existing metastore container and start a new one
+**Error**: *java.lang.RuntimeException: Failed to create namespace demo_hms in Hive Metastore. Caused by: MetaException(message:Got exception: java.nio.file.AccessDeniedException s3a://warehouse-hms/warehouse/demo_hms.db: getFileStatus on s3a://warehouse-hms/warehouse/demo_hms.db: com.amazonaws.services.s3.model.AmazonS3Exception: Forbidden (Service: Amazon S3; Status Code: 403; Error Code: 403 Forbidden*  
+**Reason:** Hive Metastore cannot access MinIO bucket, probably hive-site.xml is misconfigured or access keys were not created in MinIO    
+**Solution:** Check the following properties in hive-site.xml: fs.s3a.secret.key, fs.s3a.access.key, hive.metastore.warehouse.dir  
+**Note:** Changing hive-site.xml requires restarting Hive Metastore and Spark  
+ 
+ ---  
+  
+**Error**: *Schema initialization failed!* when starting Hive Metastore container   
+**Reason:** Hive Metastore cannot initialize underlying database because it was already initialized   
+**Solution:** Remove existing metastore container and start a new one
 ```buildoutcfg
 sudo docker-compose rm hivemetastore
 sudo docker-compose up hivemetastore
 ```
+ ---  
