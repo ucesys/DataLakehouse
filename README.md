@@ -129,7 +129,7 @@ sudo docker-compose up spark_notebook_nessie
 ```buildoutcfg
 sudo docker-compose up dremio24
 ```
-*2. Go to http://localhost:9047 and create your admin account*  
+*2. Go to http://localhost:9048 and create your admin account*  
 *3. Go to Add Source -> Nessie and configure The following:*  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-1.png" width="800"></img>  
 <img src="https://github.com/ucesys/DataLakehouse/blob/main/assets/dremio-nessie-minio-config-2.png" width="800"></img>  
