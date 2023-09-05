@@ -16,7 +16,7 @@ Due to concurrency problems with Hadoop Catalog, for <= 23.X non-aws Dremio inst
 ### MinIO
 *1. Start minio*  
 ```buildoutcfg
-sudo docker-compose up minioserver
+docker-compose up minioserver
 ```
 *2. Go to http://localhost:9001 and login using minioadmin/minioadmin credentials*  
 *3. In the UI, go to Access keys -> Create new key, generate new credentials and download them, we will be using them later on.*  
@@ -63,13 +63,13 @@ that's why our warehouse dir will be warehouse-bucket/warehouse*
 
 *4. Start Hive Metastore in a new terminal window*
 ```buildoutcfg
-sudo docker-compose up hivemetastore
+docker-compose up hivemetastore
 ```
 
 ### Connect Spark to Hive Metastore Iceberg Catalog
 *1. Start spark notebook in a new terminal window*  
 ```buildoutcfg
-sudo docker-compose up spark_notebook_hms
+docker-compose up spark_notebook_hms
 ```
 *2. Go to http://127.0.0.1:8888/lab/tree/spark_hms.ipynb*  
 *3. Run the notebook & play with Iceberg tables*  
@@ -77,7 +77,7 @@ sudo docker-compose up spark_notebook_hms
 
 *\*In order to run spark in spark-shell or spark-sql, exec into spark container:*
 ```buildoutcfg
-sudo docker exec -it spark_notebook_hms bash
+docker exec -it spark_notebook_hms bash
 ```
 
 and run spark-shell session with HMS as Iceberg Catalog*
@@ -93,7 +93,7 @@ spark-shell \
 ### Connect Dremio 23.1 to Hive Metastore Iceberg Catalog 
 *1. Start dremio in a new terminal window*
 ```buildoutcfg
-sudo docker-compose up dremio23
+docker-compose up dremio23
 ```
 *2. Go to http://localhost:9047 and create your admin account*  
 *3. From UI Select Add Source -> Metastores -> Hive 3.x and configure the following properties:*   
@@ -105,7 +105,7 @@ sudo docker-compose up dremio23
 ### Nessie
 *Start Nessie in a new terminal window*
 ```buildoutcfg
-sudo docker-compose up nessie
+docker-compose up nessie
 ```
 ### Connect Spark to Nessie Iceberg Catalog
 *0. Go to MinIO and create a bucket for our Iceberg Tables called "warehouse-nessie"*  
@@ -118,7 +118,7 @@ WAREHOUSE_NESSIE=s3a://<NESSIE WAREHOUSE BUCKET>/
 ```
 *2. Start spark notebook in a new terminal window*  
 ```buildoutcfg
-sudo docker-compose up spark_notebook_nessie
+docker-compose up spark_notebook_nessie
 ```
 *2. Go to http://127.0.0.1:8889/lab/tree/spark_nessie.ipynb*  
 *3. Run the notebook & play with Iceberg tables*  
@@ -127,7 +127,7 @@ sudo docker-compose up spark_notebook_nessie
 ### Connect Dremio 24.1 to Nessie Iceberg Catalog
 *1. Start dremio in a new terminal window*
 ```buildoutcfg
-sudo docker-compose up dremio24
+docker-compose up dremio24
 ```
 *2. Go to http://localhost:9048 and create your admin account*  
 *3. Go to Add Source -> Nessie and configure The following:*  
@@ -149,7 +149,7 @@ sudo docker-compose up dremio24
 **Reason:** Hive Metastore cannot initialize underlying database because it was already initialized   
 **Solution:** Remove existing metastore container and start a new one
 ```buildoutcfg
-sudo docker-compose rm hivemetastore
-sudo docker-compose up hivemetastore
+docker-compose rm hivemetastore
+docker-compose up hivemetastore
 ```
  ---  
