@@ -25,6 +25,8 @@ services:
     ports:
       - 9047:9047
     container_name: dremio23
+#    volumes:
+#      - ./conf/dremio-hive-site.xml:/opt/dremio/conf/hive-site.xml
 
   spark_notebook_hms:
     image: jupyter/pyspark-notebook:spark-3.3.2

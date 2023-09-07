@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<configuration>
+
+<!-- Hive Configuration can either be stored in this file or in the hadoop configuration files  -->
+<!-- that are implied by Hadoop setup variables.                                                -->
+<!-- Aside from Hadoop setup variables - this file is provided as a convenience so that Hive    -->
+<!-- users do not have to edit hadoop configuration files (that may be managed as a centralized -->
+<!-- resource).                                                                                 -->
+
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/tmp/hadoop-tmp</value>
+    <description>A base for other temporary directories.</description>
+  </property>
+
+  <property>
+    <name>hive.metastore.schema.verification</name>
+    <value>false</value>
+  </property>
+
+  <property>
+    <name>hive.metastore.sasl.enabled</name>
+    <value>false</value>
+    <description>Turn off kerberos</description>
+  </property>
+
+  <property>
+    <name>fs.s3a.path.style.access</name>
+    <value>true</value>
+    <description>By default this is false which results in http requests going to BUCKET.hostname which results in unresolved hostname</description>
+  </property>
+
+  <property>
+    <name>fs.s3a.aws.credentials.provider</name>
+    <value>org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider</value>
+    <description>Uses access key/secret</description>
+  </property>
+
+  <property>
+    <name>hive.metastore.uris</name>
+    <value>thrift://hivemetastores:9083</value>
+    <description></description>
+  </property>
+
+  <property>
+    <name>fs.s3a.endpoint</name>
+    <value>minioserver:9000</value>
+    <description>http:// prefix is not accepted by Dremio</description>
+  </property>
+
+  <property>
+    <name>fs.s3a.access.key</name>
+    <value>8NG5S2kiTlVx8IXxXrYs</value>
+    <description></description>
+  </property>
+
+  <property>
+    <name>fs.s3a.secret.key</name>
+    <value>QetGEVnQjuMaQ44lgbEJ8XEvk6QdfFdQLtyaC8Mc</value>
+    <description></description>
+  </property>
+
+  <property>
+    <name>fs.s3a.connection.ssl.enabled</name>
+    <value>false</value>
+    <description></description>
+  </property>
+
+  <property>
+    <name>fs.s3a.impl</name>
+    <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+    <description></description>
+  </property>
+
+    <property>
+    <name>hive.server2.enable.doAs</name>
+    <value>false</value>
+    <description></description>
+  </property>
+
+
+</configuration>
